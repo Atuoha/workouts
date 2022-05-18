@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:workout_app/providers/workout.dart';
 
 class HomePage extends StatelessWidget {
   Widget imageCircleAvatar(Color colored, String assetName, String title) {
@@ -92,7 +94,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -117,6 +119,106 @@ class HomePage extends StatelessWidget {
                   'Aerobics',
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Without Packs',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: Provider.of<WorkOutData>(
+                  context,
+                  listen: false,
+                ).workOutList.length,
+                itemBuilder: ((context, index) => Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              Provider.of<WorkOutData>(
+                                context,
+                                listen: false,
+                              ).workOutList[index].imageUrl,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          width: 250,
+                          top: 15,
+                          left: 10,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${Provider.of<WorkOutData>(
+                                      context,
+                                      listen: false,
+                                    ).workOutList[index].time} Hours',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${Provider.of<WorkOutData>(
+                                      context,
+                                      listen: false,
+                                    ).workOutList[index].exercises} Exercises',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    '\$${Provider.of<WorkOutData>(
+                                      context,
+                                      listen: false,
+                                    ).workOutList[index].cost}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Provider.of<WorkOutData>(
+                                context,
+                                listen: false,
+                              ).workOutList[index].isTopRated
+                                  ? Image.asset(
+                                      'assets/images/medal.png',
+                                      width: 50,
+                                    )
+                                  : const Text('')
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 20,
+                          left: 10,
+                          child: Text(
+                            Provider.of<WorkOutData>(
+                              context,
+                              listen: false,
+                            ).workOutList[index].trainer,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color:Colors.white
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+              ),
             )
           ],
         ),

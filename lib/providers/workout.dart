@@ -3,13 +3,16 @@ import 'package:flutter/cupertino.dart';
 import '../model/workout.dart';
 
 class WorkOutData extends ChangeNotifier {
+
+
+
+
   //method to fetch workout list
-  static List<WorkOut> getWorkOutList() {
-    List<WorkOut> _workOutList = [
+    final List<WorkOut> workOutList = [
       WorkOut(
         id: 0,
-        imageUrl: 'assets/img1.jpg',
-        trainer: 'Jane Doe',
+        imageUrl: 'assets/images/img1.jpg',
+        trainer: 'Jane Philips',
         title: 'Crossfit',
         time: 2,
         exercises: 12,
@@ -20,7 +23,7 @@ class WorkOutData extends ChangeNotifier {
       ),
       WorkOut(
         id: 1,
-        imageUrl: 'assets/img2.jpg',
+        imageUrl: 'assets/images/img2.jpg',
         trainer: 'Mary Daniels',
         title: 'Fitness',
         time: 3.6,
@@ -32,8 +35,8 @@ class WorkOutData extends ChangeNotifier {
       ),
       WorkOut(
         id: 2,
-        imageUrl: 'assets/img3.jpg',
-        trainer: 'Janet Joe',
+        imageUrl: 'assets/images/img3.jpg',
+        trainer: 'Janet Cruiz',
         title: 'Gymnastics',
         time: 2.4,
         exercises: 11,
@@ -44,8 +47,8 @@ class WorkOutData extends ChangeNotifier {
       ),
       WorkOut(
         id: 3,
-        imageUrl: 'assets/img4.jpg',
-        trainer: 'Lilian Doe',
+        imageUrl: 'assets/images/img4.jpg',
+        trainer: 'Lilian Whyte',
         title: 'Aerobics',
         time: 4.0,
         exercises: 16,
@@ -55,6 +58,4 @@ class WorkOutData extends ChangeNotifier {
         isTopRated: true,
       ),
     ];
-    return _workOutList;
-  }
 }

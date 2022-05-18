@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workout_app/providers/exercise.dart';
 import 'package:workout_app/screens/details.dart';
-
+import 'providers/workout.dart';
 import 'screens/home.dart';
 
 void main() {
@@ -13,17 +15,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        primarySwatch: Colors.purple,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ExerciseData()),
+        ChangeNotifierProvider(create: (context) => WorkOutData()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: 'Montserrat',
+          primarySwatch: Colors.purple,
+        ),
+        home: HomePage(),
+        routes: {
+          DetailsPage.routeName: (context) => const DetailsPage(),
+        },
       ),
-      home: HomePage(),
-      routes: {
-        DetailsPage.routeName: (context) => const DetailsPage(),
-      },
     );
   }
 }

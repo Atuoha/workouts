@@ -4,8 +4,7 @@ import '../model/exercise.dart';
 
 class ExerciseData extends ChangeNotifier {
   //Method to get the lists
-  static List<Exercise> getExerciseList() {
-    List<Exercise> _exerciseList = [
+    final List<Exercise> exerciseList = [
       Exercise(
         workOutId: 0,
         squat: '3 x 15',
@@ -35,6 +34,5 @@ class ExerciseData extends ChangeNotifier {
         legExtension: '4 x 12',
       ),
     ];
-    return _exerciseList;
-  }
+  
 }
