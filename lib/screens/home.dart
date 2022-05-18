@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:workout_app/providers/exercise.dart';
 import 'package:workout_app/providers/workout.dart';
 
 class HomePage extends StatelessWidget {
@@ -120,15 +121,88 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Without Packs',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+            const SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Without Packs',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => SingleChildScrollView(
+                          child: Container(
+                            height: 200,
+                            color: Colors.white,
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'All Exercises',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ListView.builder(
+                                      itemCount:
+                                          Provider.of<ExerciseData>(context)
+                                              .exerciseList
+                                              .length,
+                                      itemBuilder: (context, index) => ListTile(
+                                        leading: CircleAvatar(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.asset(
+                                              'assets/images/gym4.png'),
+                                        )),
+                                        title: RichText(
+                                          text: TextSpan(
+                                              text: 'SQUAT ',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      Provider.of<ExerciseData>(
+                                                    context,
+                                                    listen: false,
+                                                  )
+                                                          .exerciseList[index]
+                                                          .legExtension,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w100,
+                                                    color: Colors.black,
+                                                  ),
+                                                )
+                                              ]),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('View all exercises '))
+              ],
             ),
-            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -210,16 +284,15 @@ class HomePage extends StatelessWidget {
                               listen: false,
                             ).workOutList[index].trainer,
                             style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color:Colors.white
-                            ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.white),
                           ),
                         )
                       ],
                     )),
               ),
-            )
+            ),
           ],
         ),
       ),
