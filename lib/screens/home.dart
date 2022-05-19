@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:workout_app/providers/exercise.dart';
 import 'package:workout_app/providers/workout.dart';
+import 'package:workout_app/screens/details.dart';
 
 class HomePage extends StatelessWidget {
   Widget imageCircleAvatar(Color colored, String assetName, String title) {
@@ -160,35 +161,57 @@ class HomePage extends StatelessWidget {
                                           Provider.of<ExerciseData>(context)
                                               .exerciseList
                                               .length,
-                                      itemBuilder: (context, index) => ListTile(
-                                        leading: CircleAvatar(
+                                      itemBuilder: (context, index) =>
+                                          GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            DetailsPage.routeName,
+                                            arguments: {
+                                              'id': Provider.of<ExerciseData>(
+                                                      context,listen: false)
+                                                  .exerciseList[index]
+                                                  .workOutId
+                                            },
+                                          );
+                                        },
+                                        child: ListTile(
+                                          leading: CircleAvatar(
                                             child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Image.asset(
-                                              'assets/images/gym4.png'),
-                                        )),
-                                        title: RichText(
-                                          text: TextSpan(
-                                              text: 'SQUAT ',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Image.asset(
+                                                'assets/images/gym4.png',
                                               ),
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      Provider.of<ExerciseData>(
-                                                    context,
-                                                    listen: false,
+                                            ),
+                                          ),
+                                          trailing: Image.asset(
+                                            'assets/images/medal.png',
+                                            width: 15,
+                                          ),
+                                          title: RichText(
+                                            text: TextSpan(
+                                                text: 'SQUAT ',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: Provider.of<
+                                                            ExerciseData>(
+                                                      context,
+                                                      listen: false,
+                                                    )
+                                                        .exerciseList[index]
+                                                        .squat,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
                                                   )
-                                                          .exerciseList[index]
-                                                          .legExtension,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w100,
-                                                    color: Colors.black,
-                                                  ),
-                                                )
-                                              ]),
+                                                ]),
+                                          ),
                                         ),
                                       ),
                                     ),

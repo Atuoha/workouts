@@ -4,7 +4,7 @@ import '../model/exercise.dart';
 class ExerciseData extends ChangeNotifier {
 
   // You can still make this a list if two or more Exercises can be categorized under a particular workout
-  Exercise exercise(int id) {
+  Exercise findById(int id) {
     return exerciseList.firstWhere((exercise) => exercise.workOutId == id);
   }
 

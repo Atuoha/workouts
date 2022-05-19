@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Flutter Workout',
         theme: ThemeData(
           fontFamily: 'Montserrat',
           primarySwatch: Colors.purple,
