@@ -144,7 +144,7 @@ class _DetailsPageState extends State<DetailsPage> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(
+                image: NetworkImage(
                   workout.imageUrl,
                 ),
               ),

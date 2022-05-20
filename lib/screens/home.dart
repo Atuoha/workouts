@@ -239,7 +239,7 @@ class HomePage extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
+                            child: Image.network(
                               Provider.of<WorkOutData>(
                                 context,
                                 listen: false,
