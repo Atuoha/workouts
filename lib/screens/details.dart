@@ -174,7 +174,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage(
+                        backgroundImage: NetworkImage(
                           workout.imageUrl,
                         ),
                       ),
