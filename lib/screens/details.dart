@@ -7,6 +7,7 @@ import 'package:workout_app/providers/exercise.dart';
 import 'package:workout_app/providers/workout.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../model/workout.dart';
+import 'dart:async';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -18,6 +19,8 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   late VideoPlayerController _controller;
+  var isInit = true;
+  var isFetched = false;
 
   @override
   void dispose() {
@@ -27,37 +30,46 @@ class _DetailsPageState extends State<DetailsPage> {
 
   late WorkOut workout;
   late Exercise exercise;
+  late Future<void> _initializeVideoPlayerFuture;
 
-  // @override
-  // void didChangeDependencies() {
-   
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void didChangeDependencies() async {
+    if (isInit) {
+      try {
+        var data =
+            ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+        var id = data['id'] as int;
+        workout = Provider.of<WorkOutData>(context, listen: false).findById(id);
+        exercise =
+            Provider.of<ExerciseData>(context, listen: false).findById(id);
+      } catch (e) {
+        // ignore: avoid_print
+        print('error');
+      }
+    }
+    setState(() {
+      _controller = VideoPlayerController.network(
+        workout.videoUrl
+      )..initialize().then((_) {
+          setState(
+            () {},
+          );
+        });
+    });
+    // Initialize the controller and store the Future for later use.
+    _initializeVideoPlayerFuture = _controller.initialize();
+
+    // Use the controller to loop the video.
+    _controller.setLooping(true);
+
+    print('VIDEO URL: ' + workout.videoUrl);
+
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
     super.initState();
-
-   var data =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    var id = data['id'] as int;
-
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        workout = Provider.of<WorkOutData>(context, listen: false).findById(id);
-        exercise =
-            Provider.of<ExerciseData>(context, listen: false).findById(id);
-
-        _controller = VideoPlayerController.network(
-          workout.videoUrl,
-        )..initialize().then(
-            (_) {
-              // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-              setState(() {});
-            },
-          );
-      });
-    });
   }
 
   Widget customListTile(String title, String duration) {
@@ -79,11 +91,13 @@ class _DetailsPageState extends State<DetailsPage> {
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          });
+          setState(
+            () {
+              _controller.value.isPlaying
+                  ? _controller.pause()
+                  : _controller.play();
+            },
+          );
         },
         child: Icon(
           _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
@@ -160,7 +174,9 @@ class _DetailsPageState extends State<DetailsPage> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage(workout.imageUrl),
+                        backgroundImage: AssetImage(
+                          workout.imageUrl,
+                        ),
                       ),
                       const SizedBox(width: 5),
                       Column(
@@ -198,38 +214,30 @@ class _DetailsPageState extends State<DetailsPage> {
 
                           // VIDEO
                           Center(
-                            child: _controller.value.isInitialized
-                                ? AspectRatio(
+                            child: FutureBuilder(
+                              future: _initializeVideoPlayerFuture,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  // If the VideoPlayerController has finished initialization, use
+                                  // the data it provides to limit the aspect ratio of the video.
+                                  return 
+                                  
+                                  
+                                  AspectRatio(
                                     aspectRatio: _controller.value.aspectRatio,
+                                    // Use the VideoPlayer widget to display the video.
                                     child: VideoPlayer(_controller),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: 230,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.purple,
-                                            blurRadius: 6,
-                                            spreadRadius: 1,
-                                            blurStyle: BlurStyle.outer,
-                                          )
-                                        ],
-                                        // border: Border.all(
-                                        //   width: 2,
-                                        //   color: Colors.purple,
-                                        // ),
-                                      ),
-                                      child: Center(
-                                        child: Image.asset(
-                                          'assets/images/oops.jpg',
-                                          width: 180,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  );
+                                } else {
+                                  // If the VideoPlayerController is still initializing, show a
+                                  // loading spinner.
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
                           ),
                           //
 
@@ -273,3 +281,6 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 }
+
+
+
